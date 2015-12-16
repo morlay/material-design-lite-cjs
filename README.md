@@ -16,5 +16,7 @@ npm i material-design-lite-cjs -S
 and
 
 ```
-import Button from 'material-design-lite-cjs/src/button/button'
+import { MaterialButton } from 'material-design-lite-cjs/src/button'
 ```
+
+Notice: only component js, sass and polyfill need to import from origin one;

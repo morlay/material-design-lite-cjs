@@ -1,20 +1,31 @@
 'use strict';
 
 const resolve = require('resolve');
+const path = require('path');
 const vinylFs = require('vinyl-fs');
 const mapStream = require('map-stream');
 const transform = require('modularify').transform;
 
 const mdlModuleBaseDir = resolve.sync('material-design-lite/package.json').replace('/package.json', '');
 
-vinylFs.src([
-    mdlModuleBaseDir + '/src*/**/*.js'
-  ])
-  .pipe(mapStream((file, callback) => {
-    file.contents = new Buffer(transformMDL(String(file.contents)));
-    callback(null, file);
-  }))
-  .pipe(vinylFs.dest(__dirname));
+build();
+
+function build() {
+  return vinylFs.src([
+      mdlModuleBaseDir + '/src*/**/*.js',
+      '!' + mdlModuleBaseDir + '/src/third_party/*.js',
+      '!' + mdlModuleBaseDir + '/src*/**/demo.js'
+    ])
+    .pipe(mapStream((file, callback) => {
+      file.base = file.dirname;
+      file.contents = new Buffer(transformMDL(String(file.contents)));
+      callback(null, file);
+    }))
+    .pipe(vinylFs.dest(path.join(__dirname, '../src')))
+    .on('finish', () => {
+      console.log('build finish')
+    })
+}
 
 function transformMDL(code) {
   return transform(code, {
@@ -35,7 +46,7 @@ function transformMDL(code) {
       clearTimeout: ['global', 'clearTimeout'],
       Error: ['global', 'Error'],
       Array: ['global', 'Array'],
-      componentHandler: ['../mdlComponentHandler', 'componentHandler']
+      componentHandler: ['./mdlComponentHandler', 'componentHandler']
     },
     exports: {
       window: 'exports'
