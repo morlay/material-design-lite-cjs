@@ -1,6 +1,6 @@
 {
   "name": "material-design-lite-cjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "lodash.merge": "^3.3.2",
     "map-stream": "0.0.6",
     "material-design-lite": "*",
-    "modularify": "0.0.4",
+    "modularify": "^0.1.0",
     "require-dir": "^0.3.0",
     "resolve": "^1.1.6",
     "vinyl-fs": "^2.2.1"

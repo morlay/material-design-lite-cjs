@@ -3,17 +3,15 @@
 const fs = require('fs');
 const path = require('path');
 const requireDir = require('require-dir');
-const window = require('global/window');
 const merge = require('lodash.merge');
 
-window.addEventListener = () => {
-};
-
 function findExports(fileDir) {
-  const files = requireDir(fileDir);
+  const files = requireDir(fileDir, {
+    recurse: true
+  });
 
   return Object.keys(files).reduce((exportNames, fileName) => {
-    const newFileExports = Object.keys(files[fileName]).reduce((fileExports, key) => {
+    const newFileExports = Object.keys(files[fileName].index).reduce((fileExports, key) => {
       return merge({}, fileExports, {
         [key]: fileName
       })

@@ -15,8 +15,29 @@ npm i material-design-lite-cjs -S
 
 and
 
-```
+```js
 import { MaterialButton } from 'material-design-lite-cjs/src/button'
 ```
 
-Notice: only component js, sass and polyfill need to import from origin one;
+Notice:
+
+* This lib only includes MaterialClass files, MaterialButton, MaterialTooltip and ..;
+
+* `componentHandler` is not necessary, so remove it in each file.
+
+in most usage with component way, React or Angular or other ui framework which have life cycle.
+
+```js
+// when component mount
+this._materialInstance = new MaterialButton(findDOMNode(this));
+// when component unmount
+this._materialInstance.mdlDowngrade();
+```
+
+* sass files need to import from original one;
+
+```
+@import '~material-design-lite/src/button/button'
+```
+
+* don't forget `material-design-lite/src/third_party/*.js` as polyfill for cross-browser support
